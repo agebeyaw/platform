@@ -361,6 +361,7 @@ return [
     'configuration_sconfig_country' => 'Default country:',
     'configuration_sconfig_currency_info' => 'This currency will be used as the standard currency, everytime item prices are set.',
     'configuration_admin_currency_eur' => 'Euro',
+    'configuration_admin_currency_etb' => 'Birr',
     'configuration_admin_currency_usd' => 'Dollar (US)',
     'configuration_admin_currency_gbp' => 'Pound Sterling (UK)',
     'configuration_admin_currency_pln' => 'Polish zloty',

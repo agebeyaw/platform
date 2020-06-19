@@ -63,6 +63,9 @@ echo $app->getContainer()->get('renderer')->fetch('_header.php'); ?>
                         value="EUR" <?= $parameters['c_config_shop_currency'] === 'EUR' ? 'selected' : ''; ?>><?= $t->t('configuration_admin_currency_eur'); ?>
                     </option>
                     <option
+                        value="ETB" <?= $parameters['c_config_shop_currency'] === 'ETB' ? 'selected' : ''; ?>><?= $t->t('configuration_admin_currency_etb'); ?>
+                    </option>
+                    <option
                         value="USD" <?= $parameters['c_config_shop_currency'] === 'USD' ? 'selected' : ''; ?>><?= $t->t('configuration_admin_currency_usd'); ?>
                     </option>
                     <option

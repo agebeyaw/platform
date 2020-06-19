@@ -753,6 +753,7 @@ class Migration1536233560BasicData extends MigrationStep
         $EUR = Uuid::fromHexToBytes(Defaults::CURRENCY);
         $USD = Uuid::randomBytes();
         $GBP = Uuid::randomBytes();
+        $ETB = Uuid::randomBytes();
 
         $languageEN = Uuid::fromHexToBytes(Defaults::LANGUAGE_SYSTEM);
         $languageDE = Uuid::fromHexToBytes($this->deDeLanguageId);
@@ -760,6 +761,10 @@ class Migration1536233560BasicData extends MigrationStep
         $connection->insert('currency', ['id' => $EUR, 'iso_code' => 'EUR', 'factor' => 1, 'symbol' => '€', 'position' => 1, 'decimal_precision' => 2, 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
         $connection->insert('currency_translation', ['currency_id' => $EUR, 'language_id' => $languageEN, 'short_name' => 'EUR', 'name' => 'Euro', 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
         $connection->insert('currency_translation', ['currency_id' => $EUR, 'language_id' => $languageDE, 'short_name' => 'EUR', 'name' => 'Euro', 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
+
+        $connection->insert('currency', ['id' => $ETB, 'iso_code' => 'ETB', 'factor' => 1, 'symbol' => 'Br', 'position' => 1, 'decimal_precision' => 2, 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
+        $connection->insert('currency_translation', ['currency_id' => $ETB, 'language_id' => $languageEN, 'short_name' => 'ETB', 'name' => 'Birr', 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
+        $connection->insert('currency_translation', ['currency_id' => $ETB, 'language_id' => $languageDE, 'short_name' => 'ETB', 'name' => 'Birr', 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
 
         $connection->insert('currency', ['id' => $USD, 'iso_code' => 'USD', 'factor' => 1.17085, 'symbol' => '$', 'position' => 1, 'decimal_precision' => 2, 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
         $connection->insert('currency_translation', ['currency_id' => $USD, 'language_id' => $languageEN, 'short_name' => 'USD', 'name' => 'US-Dollar', 'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)]);
@@ -1544,9 +1549,9 @@ class Migration1536233560BasicData extends MigrationStep
     private function getRegisterTemplate_PLAIN_EN(): string
     {
         return 'Hello {{ firstName }} {{ lastName }}
-            
+
                 thank you very much for your registration.
-            
+
                 You have successfully subscribed to our newsletter.
         ';
     }
@@ -1562,9 +1567,9 @@ class Migration1536233560BasicData extends MigrationStep
     private function getRegisterTemplate_PLAIN_DE(): string
     {
         return 'Hallo {{ firstName }} {{ lastName }}
-            
+
                 vielen Dank für Ihre Anmeldung.
-            
+
                 Sie haben sich erfolgreich zu unserem Newsletter angemeldet.
         ';
     }
@@ -1581,11 +1586,11 @@ class Migration1536233560BasicData extends MigrationStep
     private function getOptInTemplate_PLAIN_EN(): string
     {
         return 'Hello {{ firstName }} {{ lastName }}
-        
+
                 Thank you for your interest in our newsletter!
-                
+
                 In order to prevent misuse of your email address, we have sent you this confirmation email. Confirm that you wish to receive the newsletter regularly by clicking on the link: {{ url }}
-                
+
                 If you have not subscribed to the newsletter, please ignore this email.
         ';
     }
@@ -1602,11 +1607,11 @@ class Migration1536233560BasicData extends MigrationStep
     private function getOptInTemplate_PLAIN_DE(): string
     {
         return 'Hallo {{ firstName }} {{ lastName }}
-        
-                Schön, dass Sie sich für unseren Newsletter interessieren! 
-                
-                Um einem Missbrauch Ihrer E-Mail-Adresse vorzubeugen, haben wir Ihnen diese Bestätigungsmail gesendet. Bestätigen Sie, dass Sie den Newsletter regelmäßig erhalten wollen, indem Sie auf den folgenden Link klicken: {{ url }} 
-                
+
+                Schön, dass Sie sich für unseren Newsletter interessieren!
+
+                Um einem Missbrauch Ihrer E-Mail-Adresse vorzubeugen, haben wir Ihnen diese Bestätigungsmail gesendet. Bestätigen Sie, dass Sie den Newsletter regelmäßig erhalten wollen, indem Sie auf den folgenden Link klicken: {{ url }}
+
                 Sollten Sie den Newsletter nicht angefordert haben, ignorieren Sie diese E-Mail.
         ';
     }
@@ -2345,7 +2350,7 @@ class Migration1536233560BasicData extends MigrationStep
     private function getHtmlTemplateEn(): string
     {
         return '<div style="font-family:arial; font-size:12px;">
-    
+
 {% set currencyIsoCode = order.currency.isoCode %}
 Dear {{order.orderCustomer.salutation.displayName }} {{order.orderCustomer.lastName}},<br>
 <br>
@@ -2390,15 +2395,15 @@ Thank you for your order at {{ salesChannel.name }} (Number: {{order.orderNumber
         <strong>Total gross: {{ order.amountTotal|currency(currencyIsoCode) }}</strong><br>
     {% endif %}
     <br>
-    
+
     <strong>Selected payment type:</strong> {{ order.transactions.first.paymentMethod.name }}<br>
     {{ order.transactions.first.paymentMethod.description }}<br>
     <br>
-    
+
     <strong>Selected shipping type:</strong> {{ delivery.shippingMethod.name }}<br>
     {{ delivery.shippingMethod.description }}<br>
     <br>
-    
+
     {% set billingAddress = order.addresses.get(order.billingAddressId) %}
     <strong>Billing address:</strong><br>
     {{ billingAddress.company }}<br>
@@ -2407,7 +2412,7 @@ Thank you for your order at {{ salesChannel.name }} (Number: {{order.orderNumber
     {{ billingAddress.zipcode }} {{ billingAddress.city }}<br>
     {{ billingAddress.country.name }}<br>
     <br>
-    
+
     <strong>Shipping address:</strong><br>
     {{ delivery.shippingOrderAddress.company }}<br>
     {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}<br>
@@ -2419,7 +2424,7 @@ Thank you for your order at {{ salesChannel.name }} (Number: {{order.orderNumber
         Your VAT-ID: {{ billingAddress.vatId }}
         In case of a successful order and if you are based in one of the EU countries, you will receive your goods exempt from turnover tax.<br>
     {% endif %}
-    
+
     If you have any questions, do not hesitate to contact us.
 
 </p>
@@ -2436,7 +2441,7 @@ Thank you for your order at {{ salesChannel.name }} (Number: {{order.orderNumber
 
 Information on your order:
 
-Pos.   Art.No.			Description			Quantities			Price			Total 
+Pos.   Art.No.			Description			Quantities			Price			Total
 
 {% for lineItem in order.lineItems %}
 {{ loop.index }}      {{ lineItem.payload.productNumber|wordwrap(80) }}				{{ lineItem.label|wordwrap(80) }}			{{ lineItem.quantity }}			{{ lineItem.unitPrice|currency(currencyIsoCode) }}			{{ lineItem.totalPrice|currency(currencyIsoCode) }}
@@ -2470,7 +2475,7 @@ Billing address:
 Shipping address:
 {{ delivery.shippingOrderAddress.company }}
 {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}
-{{ delivery.shippingOrderAddress.street }} 
+{{ delivery.shippingOrderAddress.street }}
 {{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}
 {{ delivery.shippingOrderAddress.country.name }}
 
@@ -2487,7 +2492,7 @@ If you have any questions, do not hesitate to contact us.
     private function getHtmlTemplateDe(): string
     {
         return '<div style="font-family:arial; font-size:12px;">
-    
+
 {% set currencyIsoCode = order.currency.isoCode %}
 Hallo {{order.orderCustomer.salutation.displayName }} {{order.orderCustomer.lastName}},<br>
 <br>
@@ -2532,15 +2537,15 @@ vielen Dank für Ihre Bestellung im {{ salesChannel.name }} (Nummer: {{order.ord
         <strong>Gesamtkosten Brutto: {{ order.amountTotal|currency(currencyIsoCode) }}</strong><br>
     {% endif %}
     <br>
-    
+
     <strong>Gewählte Zahlungsart:</strong> {{ order.transactions.first.paymentMethod.name }}<br>
     {{ order.transactions.first.paymentMethod.description }}<br>
     <br>
-    
+
     <strong>Gewählte Versandtart:</strong> {{ delivery.shippingMethod.name }}<br>
     {{ delivery.shippingMethod.description }}<br>
     <br>
-    
+
     {% set billingAddress = order.addresses.get(order.billingAddressId) %}
     <strong>Rechnungsaddresse:</strong><br>
     {{ billingAddress.company }}<br>
@@ -2549,7 +2554,7 @@ vielen Dank für Ihre Bestellung im {{ salesChannel.name }} (Nummer: {{order.ord
     {{ billingAddress.zipcode }} {{ billingAddress.city }}<br>
     {{ billingAddress.country.name }}<br>
     <br>
-    
+
     <strong>Lieferadresse:</strong><br>
     {{ delivery.shippingOrderAddress.company }}<br>
     {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}<br>
@@ -2562,7 +2567,7 @@ vielen Dank für Ihre Bestellung im {{ salesChannel.name }} (Nummer: {{order.ord
         Bei erfolgreicher Prüfung und sofern Sie aus dem EU-Ausland
         bestellen, erhalten Sie Ihre Ware umsatzsteuerbefreit. <br>
     {% endif %}
-    
+
     Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
 
 </p>
@@ -2612,7 +2617,7 @@ Rechnungsadresse:
 Lieferadresse:
 {{ delivery.shippingOrderAddress.company }}
 {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}
-{{ delivery.shippingOrderAddress.street }} 
+{{ delivery.shippingOrderAddress.street }}
 {{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}
 {{ delivery.shippingOrderAddress.country.name }}
 
@@ -2643,10 +2648,10 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     private function getRegistrationPlainTemplateEn(): string
     {
         return 'Dear {{ customer.salutation.displayName }} {{ customer.lastName }},
-                
+
                 thank you for your registration with our Shop.
                 You will gain access via the email address {{ customer.email }} and the password you have chosen.
-                You can change your password anytime.        
+                You can change your password anytime.
         ';
     }
 
@@ -2666,7 +2671,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     private function getRegistrationPlainTemplateDe(): string
     {
         return 'Hallo {{ customer.salutation.displayName }} {{ customer.lastName }},
-                
+
                 vielen Dank für Ihre Anmeldung in unserem Shop.
                 Sie erhalten Zugriff über Ihre E-Mail-Adresse {{ customer.email }} und dem von Ihnen gewählten Kennwort.
                 Sie können Ihr Kennwort jederzeit nachträglich ändern.
@@ -2726,7 +2731,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     {
         return '
         Hallo {{ customer.salutation.displayName }} {{ customer.lastName }},
-    
+
         im Shop {{ salesChannel.name }} wurde eine Anfrage gestellt, um Ihr Passwort zurück zu setzen.
         Bitte bestätigen Sie den unten stehenden Link, um ein neues Passwort zu definieren.
 
@@ -2775,7 +2780,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     {
         return '
         Hallo,
-    
+
         ihr Händlerkonto bei {{ salesChannel.name }} wurde freigeschaltet.
         Von nun an werden wir Ihnen den Netto-Preis berechnen.
     ';
@@ -2787,7 +2792,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     <p>
         Hello,<br/>
 		<br/>
-        thank you for your interest in our trade prices. 
+        thank you for your interest in our trade prices.
         Unfortunately, we do not have a trading license yet so that we cannot accept you as a merchant.<br/>
         In case of further questions please do not hesitate to contact us via telephone, fax or email.
     </p>
@@ -2799,7 +2804,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
         return '
         Hello,
 
-        thank you for your interest in our trade prices. Unfortunately, 
+        thank you for your interest in our trade prices. Unfortunately,
         we do not have a trading license yet so that we cannot accept you as a merchant.
         In case of further questions please do not hesitate to contact us via telephone, fax or email.
     ';
@@ -2823,7 +2828,7 @@ Für Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
         return '
         Hallo,
 
-        vielen Dank für ihr Interesse an unseren Großhandelspreisen. Leider liegt uns bisher keine 
+        vielen Dank für ihr Interesse an unseren Großhandelspreisen. Leider liegt uns bisher keine
         Händlerauthentifizierung vor, und daher können wir Ihre Anfrage nicht bestätigen.
         Bei weiteren Fragen kontaktieren Sie uns gerne per Telefon, Fax oder E-Mail.
     ';
